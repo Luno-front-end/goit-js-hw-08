@@ -20,6 +20,7 @@ const bulkheadGalleryArray = galeryHistory.map(
     listGallery.classList.add("gallery__item");
     listLinkGallery.classList.add("gallery__link");
     listImgGallery.classList.add("gallery__image");
+    listImgGallery.id = "index-currentImg";
     listLinkGallery.href = original;
 
     listImgGallery.src = preview;
@@ -31,6 +32,7 @@ const bulkheadGalleryArray = galeryHistory.map(
     refs.galeryList.append(listGallery);
   }
 );
+const images = document.querySelectorAll("#index-currentImg");
 function onOpenModal(e) {
   e.preventDefault();
   if (e.target.nodeName !== "IMG") {
@@ -40,23 +42,22 @@ function onOpenModal(e) {
 }
 
 function SubstitutionValuesOpenModal(e) {
-  onAddListenerKeyboardKay();
-  onAddListenerKeyboardKayArrow();
+  window.addEventListener("keydown", onEscKeyPress);
 
   refs.overlay.addEventListener("click", onCloseByOverlay);
 
   refs.openModalContainer.classList.add("is-open");
   refs.imgOpenModal.src = e.target.dataset.source;
   refs.imgOpenModal.alt = e.target.alt;
+  setActiveImage(index);
   // console.log(e.target);
-}
-function lol(e) {
-  console.log(e.currentTarget);
 }
 
 function onCloseModalBtn() {
-  onRemoveListenerKeyboardKay();
+  window.removeEventListener("keydown", onEscKeyPress);
+
   refs.overlay.removeEventListener("click", onCloseByOverlay);
+
   refs.openModalContainer.classList.remove("is-open");
   refs.imgOpenModal.src = "";
   refs.imgOpenModal.alt = "";
@@ -74,34 +75,45 @@ function onCloseByOverlay(e) {
   }
 }
 
-function onArrowKayPress(e) {
-  // const cur =
-  // galeryHistory.map(({ original, description }) => {
-  // console.log(preview, original, description);
-  const ollGaleryListItem = refs.galeryList.querySelectorAll(".gallery__item");
-  // const currentSlider = e.currentTarget.length;
+let index = 0;
 
-  if (e.code === "ArrowRight") {
-    // console.log(currentSlider);
-    // console.log("v pravo");
-    console.log(ollGaleryListItem);
+window.addEventListener("keydown", onKeyPrevImg);
 
-    // console.log(indexOf(this));
+window.addEventListener("keydown", onNextKeyImg);
+
+function onKeyPrevImg(e) {
+  if (e.code === "ArrowLeft") {
+    indexPrev();
   }
-  // });
 }
 
-// function slider(e) {
-// }
+function onNextKeyImg(e) {
+  if (e.code === "ArrowRight") {
+    indexNext();
+  }
+}
 
-const onAddListenerKeyboardKay = () =>
-  window.addEventListener("keydown", onEscKeyPress);
+function indexPrev() {
+  index -= 1;
+  if (index - 1 < 0) {
+    return;
+  }
+  setActiveImage(index);
+}
 
-const onRemoveListenerKeyboardKay = () =>
-  window.removeEventListener("keydown", onEscKeyPress);
+function indexNext() {
+  index += 1;
+  if (index + 1 >= images.length) {
+    return;
+  }
+  setActiveImage(index);
+}
 
-const onAddListenerKeyboardKayArrow = () =>
-  window.addEventListener("keydown", onArrowKayPress);
-
+function setActiveImage(imageIdx) {
+  const activeImage = images[imageIdx];
+  refs.imgOpenModal.src = activeImage.dataset.source;
+  refs.imgOpenModal.alt = activeImage.alt;
+  // console.log();
+}
 // ArrowRight;
 // ArrowLeft;
