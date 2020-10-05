@@ -32,7 +32,9 @@ const bulkheadGalleryArray = galeryHistory.map(
     refs.galeryList.append(listGallery);
   }
 );
+
 const images = document.querySelectorAll("#index-currentImg");
+
 function onOpenModal(e) {
   e.preventDefault();
   if (e.target.nodeName !== "IMG") {
@@ -47,9 +49,11 @@ function SubstitutionValuesOpenModal(e) {
   refs.overlay.addEventListener("click", onCloseByOverlay);
 
   refs.openModalContainer.classList.add("is-open");
+
   refs.imgOpenModal.src = e.target.dataset.source;
   refs.imgOpenModal.alt = e.target.alt;
   setActiveImage(index);
+
   // console.log(e.target);
 }
 
@@ -94,18 +98,18 @@ function onNextKeyImg(e) {
 }
 
 function indexPrev() {
-  index -= 1;
   if (index - 1 < 0) {
     return;
   }
+  index -= 1;
   setActiveImage(index);
 }
 
 function indexNext() {
-  index += 1;
   if (index + 1 >= images.length) {
     return;
   }
+  index += 1;
   setActiveImage(index);
 }
 
@@ -113,6 +117,7 @@ function setActiveImage(imageIdx) {
   const activeImage = images[imageIdx];
   refs.imgOpenModal.src = activeImage.dataset.source;
   refs.imgOpenModal.alt = activeImage.alt;
+
   // console.log();
 }
 // ArrowRight;
