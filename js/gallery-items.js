@@ -44,7 +44,7 @@ function onOpenModal(e) {
 }
 
 function SubstitutionValuesOpenModal(e) {
-  window.addEventListener("keydown", onEscKeyPress);
+  window.addEventListener("keydown", onKeyPrevNextEscImg);
 
   refs.overlay.addEventListener("click", onCloseByOverlay);
 
@@ -53,12 +53,10 @@ function SubstitutionValuesOpenModal(e) {
   refs.imgOpenModal.src = e.target.dataset.source;
   refs.imgOpenModal.alt = e.target.alt;
   setActiveImage(index);
-
-  // console.log(e.target);
 }
 
 function onCloseModalBtn() {
-  window.removeEventListener("keydown", onEscKeyPress);
+  window.removeEventListener("keydown", onKeyPrevNextEscImg);
 
   refs.overlay.removeEventListener("click", onCloseByOverlay);
 
@@ -67,33 +65,21 @@ function onCloseModalBtn() {
   refs.imgOpenModal.alt = "";
 }
 
-function onEscKeyPress(e) {
-  if (e.code === "Escape") {
-    onCloseModalBtn();
-  }
-}
-
 function onCloseByOverlay(e) {
   if (e.target === refs.overlay) {
     onCloseModalBtn();
   }
 }
-
 let index = 0;
 
-window.addEventListener("keydown", onKeyPrevImg);
-
-window.addEventListener("keydown", onNextKeyImg);
-
-function onKeyPrevImg(e) {
+function onKeyPrevNextEscImg(e) {
   if (e.code === "ArrowLeft") {
     indexPrev();
-  }
-}
-
-function onNextKeyImg(e) {
-  if (e.code === "ArrowRight") {
+  } else if (e.code === "ArrowRight") {
     indexNext();
+  }
+  if (e.code === "Escape") {
+    onCloseModalBtn();
   }
 }
 
@@ -117,8 +103,4 @@ function setActiveImage(imageIdx) {
   const activeImage = images[imageIdx];
   refs.imgOpenModal.src = activeImage.dataset.source;
   refs.imgOpenModal.alt = activeImage.alt;
-
-  // console.log();
 }
-// ArrowRight;
-// ArrowLeft;
